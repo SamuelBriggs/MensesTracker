@@ -22,6 +22,6 @@ public class Cycle {
     private LocalDate endingDay;
     private List<LocalDate> periodDays;
     private List<LocalDate> safePeriod;
-    private List<LocalDate> ovulationPeriod;
+    private List<LocalDate> fertileWindow;
 
 }

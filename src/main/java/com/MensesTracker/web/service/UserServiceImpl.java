@@ -38,10 +38,10 @@ public class UserServiceImpl implements UserService{
 
         Cycle cycle = new Cycle();
         cycle.setStartDay(startDate.plusDays(cycleParameterRequest.getCycleDays()));
-        cycle.setOvulationPeriod(setOvulationDays(startDate));
         cycle.setSafePeriod(setSafePeriodDays(startDate));
         cycle.setPeriodDays(setPeriodDays(cycle, cycleParameterRequest));
         cycle.setOvulationDay(cycle.getStartDay().minusDays(14));
+        cycle.setFertileWindow(setOvulationDays(cycle.getOvulationDay()));
         cycle.setEndingDay(cycle.getStartDay().plusDays(cycleParameterRequest.getNumberOfPeriodDays()-1));
 
         cycleFor12Months.add(cycle);
@@ -51,9 +51,9 @@ public class UserServiceImpl implements UserService{
             Cycle lastCycle = cycleFor12Months.get(i);
             newCycle.setStartDay(lastCycle.getStartDay().plusDays(cycleParameterRequest.getCycleDays()));
             newCycle.setSafePeriod(setSafePeriodDays(newCycle.getStartDay()));
-            newCycle.setOvulationPeriod(setOvulationDays(newCycle.getStartDay()));
+            newCycle.setOvulationDay(newCycle.getStartDay().plusDays(cycleParameterRequest.getCycleDays()/2));
+            newCycle.setFertileWindow(setOvulationDays(newCycle.getOvulationDay()));
             newCycle.setPeriodDays(setPeriodDays(newCycle, cycleParameterRequest));
-            newCycle.setOvulationDay(newCycle.getStartDay().minusDays(14));
             newCycle.setEndingDay(newCycle.getStartDay().plusDays(cycleParameterRequest.getNumberOfPeriodDays()-1));
             cycleFor12Months.add(newCycle);
 
@@ -74,11 +74,12 @@ public class UserServiceImpl implements UserService{
 
     private List<LocalDate> setOvulationDays(LocalDate localDate){
         List<LocalDate> ovulationDays = new ArrayList<>();
-        int numberOfOvulationDays = 6;
-        int firstDayOfOvulation = localDate.getDayOfMonth() + 14;
-        for (int i = 0; i < numberOfOvulationDays; i++) {
-            ovulationDays.add(localDate.plusDays(firstDayOfOvulation));
-            firstDayOfOvulation++;
+        int numberOfOvulationDays = 2;
+        ovulationDays.add(localDate.minusDays(2));
+        ovulationDays.add(localDate.minusDays(1));
+
+        for (int i = 0; i <= numberOfOvulationDays; i++) {
+            ovulationDays.add(localDate.plusDays(localDate.getDayOfMonth()));
         }
         return ovulationDays;
     }
