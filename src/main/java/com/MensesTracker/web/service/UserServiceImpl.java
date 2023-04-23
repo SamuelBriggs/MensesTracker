@@ -4,7 +4,7 @@ import com.MensesTracker.web.dtos.requests.CycleParameterRequest;
 import com.MensesTracker.web.dtos.responses.UserDtoResponse;
 import com.MensesTracker.web.models.Cycle;
 import com.MensesTracker.web.models.User;
-import com.MensesTracker.web.repository.UserRepository;
+//import com.MensesTracker.web.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,19 +15,19 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserServiceImpl implements UserService{
-    @Autowired
-    private UserRepository userRepository;
+public class UserServiceImpl implements UserService {
 
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+  //  private UserRepository userRepository;
 
-    @Override
-    public List<UserDtoResponse> findAllUsers() {
-        List<User> users = userRepository.findAll();
-        return users.stream().map((user) -> mapToUserResponse(user)).collect(Collectors.toList());
-    }
+    // public UserServiceImpl(UserRepository userRepository) {
+       // this.userRepository = userRepository;
+    // }
+
+    //@Override
+    //public List<UserDtoResponse> findAllUsers() {
+      //  List<User> users = userRepository.findAll();
+        // return users.stream().map((user) -> mapToUserResponse(user)).collect(Collectors.toList());
+    // }
 
     @Override
     public List<Cycle> calculateCycleFor12Months(CycleParameterRequest cycleParameterRequest) {
@@ -37,7 +37,9 @@ public class UserServiceImpl implements UserService{
                 Integer.parseInt(dateList[1]), Integer.parseInt(dateList[0]));
 
         Cycle cycle = new Cycle();
+      //  cycle.setMonthInEffect(startDate.getMonth());
         cycle.setStartDay(startDate.plusDays(cycleParameterRequest.getCycleDays()));
+        cycle.setMonthInEffect(cycle.getStartDay().getMonth());
         cycle.setSafePeriod(setSafePeriodDays(startDate));
         cycle.setPeriodDays(setPeriodDays(cycle, cycleParameterRequest));
         cycle.setOvulationDay(cycle.getStartDay().minusDays(14));
@@ -51,6 +53,7 @@ public class UserServiceImpl implements UserService{
             Cycle lastCycle = cycleFor12Months.get(i);
             newCycle.setStartDay(lastCycle.getStartDay().plusDays(cycleParameterRequest.getCycleDays()));
             newCycle.setSafePeriod(setSafePeriodDays(newCycle.getStartDay()));
+            newCycle.setMonthInEffect(newCycle.getStartDay().getMonth());
             newCycle.setOvulationDay(newCycle.getStartDay().plusDays(cycleParameterRequest.getCycleDays()/2));
             newCycle.setFertileWindow(setOvulationDays(newCycle.getOvulationDay()));
             newCycle.setPeriodDays(setPeriodDays(newCycle, cycleParameterRequest));
@@ -98,7 +101,7 @@ public class UserServiceImpl implements UserService{
     }
     private UserDtoResponse mapToUserResponse(User user){
         UserDtoResponse userDtoResponse = UserDtoResponse.builder()
-                .id(user.getId())
+             //   .id(user.getId())
                 .eMail(user.getEMail())
                 .name(user.getName())
                 .build();

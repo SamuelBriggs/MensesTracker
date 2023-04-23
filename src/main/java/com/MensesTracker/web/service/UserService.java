@@ -8,7 +8,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface UserService {
-    List<UserDtoResponse> findAllUsers();
-
+ //   List<UserDtoResponse> findAllUsers();
     List<Cycle> calculateCycleFor12Months(CycleParameterRequest cycleParameterRequest);
 }

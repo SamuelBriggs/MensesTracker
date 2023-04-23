@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 
+import java.time.DateTimeException;
+
 @Controller
 @Service
 public class UserController {
@@ -28,7 +30,7 @@ public class UserController {
         try{
         return new ResponseEntity<>(userService.calculateCycleFor12Months(cycleParameterRequest), HttpStatus.CREATED);}
        catch(DateTimeException ex){
-       return new ResponseEntity<>(ex.getmessages, HttpStatus.BAD_REQUEST)
+       return new ResponseEntity<>(ex.getMessage(), HttpStatus.BAD_REQUEST);
        }
     }
 

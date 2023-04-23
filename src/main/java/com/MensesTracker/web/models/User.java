@@ -6,20 +6,18 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
-@Entity
+//@Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "Users")
+//@Table(name = "Users")
 
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  //  @Id
+   // @GeneratedValue(strategy = GenerationType.IDENTITY)
+   // private Long id;
     private String name;
     private String password;
     private String eMail;
-    @OneToMany
     private List<Cycle> cycles;
-
 }
