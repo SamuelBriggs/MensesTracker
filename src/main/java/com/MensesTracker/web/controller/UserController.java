@@ -25,7 +25,11 @@ public class UserController {
 
     @PostMapping("user/calculateCycle")
     public ResponseEntity<?> calculateCycle(@RequestBody CycleParameterRequest cycleParameterRequest){
-        return new ResponseEntity<>(userService.calculateCycleFor12Months(cycleParameterRequest), HttpStatus.CREATED);
+        try{
+        return new ResponseEntity<>(userService.calculateCycleFor12Months(cycleParameterRequest), HttpStatus.CREATED);}
+       catch(DateTimeException ex){
+       return new ResponseEntity<>(ex.getmessages, HttpStatus.BAD_REQUEST)
+       }
     }
 
 
